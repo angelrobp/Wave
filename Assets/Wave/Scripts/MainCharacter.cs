@@ -85,7 +85,7 @@ public class MainCharacter : MonoBehaviour
         transform.Translate(movement * Time.deltaTime);
 
         //Movimiento camara para seguir al jugador
-        mainCam.move(movement * Time.deltaTime);
+        //mainCam.move(movement * Time.deltaTime);
 
         
     }
