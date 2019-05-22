@@ -33,6 +33,7 @@ public class Game : MonoBehaviour
         staticUp = Up;
         int liminv = velocidad + invisible;
 
+        // Se inicializan las bolas
         GameObject g;
         for(int i=0; i<UpsNumber; i++)
         {
@@ -40,6 +41,7 @@ public class Game : MonoBehaviour
             g.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
         }
 
+        //Se inicializan las serpientes controladas por la IA
         GameObject s;
         for (int i = 0; i < SnakeNumber; i++)
         {
@@ -56,6 +58,7 @@ public class Game : MonoBehaviour
         p = Instantiate(snakep);
         p.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
 
+        //UNICAMENTE MODIFICAR ESTA VARIABLE PARA INDICAR EL PODER DEL JUGADOR (TIPO)
         p.GetComponent<SnakeMovementReal>().setPoder(2);
     }
 
@@ -67,6 +70,7 @@ public class Game : MonoBehaviour
 
     public int GetUpsNumber() => UpsNumber;
 
+    //Genera una nueva bola en el espacio
     public static void GenerateUp()
     {
         GameObject g = Instantiate(staticUp);

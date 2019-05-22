@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Clase que lleva la lógica de la serpiente en sí (controlada por el jugador)
 public class SnakeMovementReal : MonoBehaviour
 {
     public List<Transform> BodyParts = new List<Transform>();
@@ -18,8 +19,6 @@ public class SnakeMovementReal : MonoBehaviour
 
     public bool repelente = false;
     public bool invisible = false;
-
-
 
     private double lastTime;
 
@@ -59,6 +58,7 @@ public class SnakeMovementReal : MonoBehaviour
         Move();
     }
 
+    //Lleva el control de los collider, activando y desactivando para que únicamente esté activa la última vida.
     public void updateCollider()
     {
         if(BodyParts.Count > 0)
@@ -72,14 +72,16 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Mueve la serpiente, el movimiento es definido por le jugador utilizando las flechas.
     public void Move()
     {
 
+        //Comprueba si hemos activado el poder
         activatePower();
 
         float curspeed;
 
-        // PODERES
+        // CONTROL DE PODERES
         if (tipoPoder == 0 && poderActivo) curspeed = speed * 3;
         else curspeed = speed;
 
@@ -92,7 +94,10 @@ public class SnakeMovementReal : MonoBehaviour
         }
         //FIN PODERES
 
+        //Comprobamos si estamos cerca de un repelente
         alejarJugador();
+
+        //Guardamos los valores del movimiento pulsando las flechas.
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             dir_angle += angle_increment;
@@ -102,11 +107,14 @@ public class SnakeMovementReal : MonoBehaviour
         {
             dir_angle -= angle_increment;
         }
+
+        //Movemos la pieza clave del jugador (cabeza)
         Vector3 position = BodyParts[0].position;
         position.x += Mathf.Cos(dir_angle) * Time.deltaTime * curspeed;
         position.y += Mathf.Sin(dir_angle) * Time.deltaTime * curspeed;
         BodyParts[0].position = position;
 
+        //El resto del cuerpo se mueve con él
         for (int i = 1; i < BodyParts.Count; i++)
         {
             curBodyPart = BodyParts[i];
@@ -128,6 +136,7 @@ public class SnakeMovementReal : MonoBehaviour
 
     }
 
+    //Función que añade una nueva vida a la serpiente
     public void AddBodyPart()
     {
         Transform newpart = (Instantiate(bodyprefab, BodyParts[BodyParts.Count-1].position, BodyParts[BodyParts.Count - 1].rotation) as GameObject).transform;
@@ -140,6 +149,7 @@ public class SnakeMovementReal : MonoBehaviour
         BodyParts[BodyParts.Count - 1].gameObject.GetComponent<Renderer>().material.color = orange;
     }
 
+    //Funcion que elimina la última vida de la serpiente.
     public void RemoveBodyPart()
     {
         BodyParts.RemoveAt(BodyParts.Count - 1);
@@ -149,16 +159,19 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Funcion para sumar vida a una serpiente
     public void sumarVida(int n)
     {
         vida += n;
     }
 
+    //Funcion para restar vida a una serpiente
     public void restarVida(int n)
     {
         vida -= n;
     }
 
+    //Funcion que se utiliza al comienzo del juego para indicar el poder de la serpiente jugador
     public void setPoder(int value)
     {
 
@@ -181,6 +194,7 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Devuelve los segundos que llevamos con cierta actividad (poder o recarga)
     private float getSeconds()
     {
 
@@ -195,6 +209,7 @@ public class SnakeMovementReal : MonoBehaviour
         return seconds;
     }
 
+    //Comprueba si hemos pasado el limite del poder
     private void updatePoder()
     {
         float seconds = getSeconds();
@@ -216,6 +231,7 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Comprueba si hemos pasado el limite de la recarga
     private void updateRecarga()
     {
         float seconds = getSeconds();
@@ -227,26 +243,30 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Cuando se activa el poder repelente, se llama a esta funcion para cambiar la configuración necesaria
     public void poderRepelente()
     {
         repelente = true;
 
+        // Se pone el ultimo objeto como no colisionable para que no te puedan comer
         if (BodyParts.Count > 0)
         {
             BodyParts[BodyParts.Count - 1].gameObject.GetComponent<SphereCollider>().enabled = false;
         }
 
+        //Se cambia el color de la serpiente para indicar el estado de repelente
         for (int i = 0; i < BodyParts.Count; i++)
         {
             BodyParts[i].gameObject.GetComponent<Renderer>().material.color = Color.blue;
         }
     }
 
+    //Funcion que resetea a la serpiente despues de haber usado un poder repelente
     public void resetRepelente()
     {
-
         repelente = false;
 
+        //Vuelve a dejar a la serpiente en estado normal
         if (BodyParts.Count > 0)
         {
             for (int i = 0; i < BodyParts.Count; i++)
@@ -257,10 +277,12 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Cuando se activa el poder invisible, se llama a esta funcion para cambiar la configuración necesaria
     public void poderInvisible()
     {
         invisible = true;
 
+        // Se pone la serpiente entera como no colisionable y se hace transparente para indicar el estado de invisible
         for (int i = 0; i < BodyParts.Count; i++)
         {
             BodyParts[i].gameObject.GetComponent<SphereCollider>().enabled = false;
@@ -270,11 +292,12 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Funcion que resetea a la serpiente despues de haber usado un poder invisible
     public void resetInvisible()
     {
-
         invisible = false;
 
+        //Vuelve a dejar a la serpiente en estado normal
         if (BodyParts.Count > 0)
         {
             for (int i = 0; i < BodyParts.Count; i++)
@@ -286,6 +309,7 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Comprueba si el usuario ha activado el poder pulsando el espacio.
     public void activatePower()
     {
         if (!enRecarga && !poderActivo)
@@ -297,15 +321,18 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Funcion que aleja la serpiente de otra (repelente) automáticamente
     public void alejarJugador()
     {
         float dist = 0.0f;
         int pos = -1;
 
+        //Se recorren todas las serpientes del mapa
         GameObject[] objs = GameObject.FindGameObjectsWithTag("snakes");
 
         for (int i = 0; i < objs.Length; i++)
         {
+            //Se comprueba la distancia entre la serpiente jugador y el resto de serpientes.
             dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[0].position);
 
             if (dist < objs[i].GetComponent<SnakeMovementIA>().umbralDist && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente)
@@ -315,6 +342,7 @@ public class SnakeMovementReal : MonoBehaviour
             }
         }
 
+        //Si efectivamente tenemos dentro de nuestro rango de vision una serpiente repelente, nos alejamos de ella automáticamente.
         if(pos >= 0)
         {
             GameObject res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[0].gameObject;
@@ -323,6 +351,7 @@ public class SnakeMovementReal : MonoBehaviour
         }
     }
 
+    //Mueve a la serpiente jugador automáticamente para alejarse de una serpiente repelente.
     public void Move(GameObject dest)
     {
 
