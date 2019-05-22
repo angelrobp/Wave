@@ -412,6 +412,7 @@ public class SnakeMovementIA : MonoBehaviour
 
         float dist = 0.0f;
         int pos = 0;
+        int posj = 0;
         float min = Mathf.Infinity;
         GameObject[] objs;
         GameObject objs2;
@@ -443,11 +444,13 @@ public class SnakeMovementIA : MonoBehaviour
                 objs = GameObject.FindGameObjectsWithTag("snakes");
                 objs2 = GameObject.FindGameObjectWithTag("snakep");
                 player = false;
+                int tam_enemy = -1;
 
                 //Buscamos de todas las serpientes, la mas cercana para atacarle.
                 for (int i = 0; i < objs.Length; i++)
                 {
-                    dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[0].position);
+                    tam_enemy = objs[i].GetComponent<SnakeMovementIA>().BodyParts.Count;
+                    dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[tam_enemy-1].position);
 
                     if (dist < min && ID != objs[i].GetComponent<SnakeMovementIA>().ID && !objs[i].gameObject.GetComponent<SnakeMovementIA>().invisible)
                     {
@@ -458,7 +461,8 @@ public class SnakeMovementIA : MonoBehaviour
 
                 if(objs2 != null)
                 {
-                    dist = Vector3.Distance(BodyParts[0].position, objs2.GetComponent<SnakeMovementReal>().BodyParts[0].position);
+                    tam_enemy = objs2.GetComponent<SnakeMovementReal>().BodyParts.Count;
+                    dist = Vector3.Distance(BodyParts[0].position, objs2.GetComponent<SnakeMovementReal>().BodyParts[tam_enemy-1].position);
 
                     if (dist < min && !objs2.GetComponent<SnakeMovementReal>().invisible)
                     {
@@ -490,40 +494,65 @@ public class SnakeMovementIA : MonoBehaviour
                 //Buscamos la serpiente cercana o repelente para alejarnos.
                 for (int i = 0; i < objs.Length; i++)
                 {
-                    dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[0].position);
+                    List<Transform> lt = objs[i].GetComponent<SnakeMovementIA>().BodyParts;
 
-                    if (dist < min && ID != objs[i].GetComponent<SnakeMovementIA>().ID && !objs[i].gameObject.GetComponent<SnakeMovementIA>().invisible)
+                    //Se recorren cada una de las vidas de la serpiente
+                    for (int j = 0; j < lt.Count; j++)
                     {
-                        min = dist;
-                        pos = i;
-                    }
 
-                    if (dist < umbralDist && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente && ID != objs[i].GetComponent<SnakeMovementIA>().ID)
-                    {
-                        pos = i;
-                        break;
+                        if (lt[j] != null)
+                        {
+                            Vector3 aux1 = lt[j].position;
+
+                            //Se comprueba la distancia entre nuestra cabeza y una vida determinada de la serpiente enemiga
+                            dist = Vector3.Distance(BodyParts[0].position, aux1);
+
+                            if (dist < min && ID != lt[j].gameObject.GetComponentInParent<SnakeMovementIA>().ID && !objs[i].gameObject.GetComponent<SnakeMovementIA>().invisible)
+                            {
+                                min = dist;
+                                pos = i;
+                                posj = j;
+                            }
+
+                            //Comprobamos si la serpiente que estamos viendo es repelente.
+                            if (dist < umbralDist && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente && ID != objs[i].GetComponent<SnakeMovementIA>().ID)
+                            {
+                                pos = i;
+                                posj = j;
+                                break;
+                            }
+                        }
                     }
                 }
 
+                //Comprobamos el jugador
                 if (objs2 != null)
                 {
-                    dist = Vector3.Distance(BodyParts[0].position, objs2.GetComponent<SnakeMovementReal>().BodyParts[0].position);
+                    List<Transform> lt2 = objs2.GetComponent<SnakeMovementReal>().BodyParts;
 
-                    if ((dist < min && !objs2.gameObject.GetComponent<SnakeMovementReal>().invisible) || (dist < umbralDist && objs2.gameObject.GetComponent<SnakeMovementReal>().repelente && ID != objs2.GetComponent<SnakeMovementReal>().ID))
+                    for (int j = 0; j < lt2.Count; j++)
                     {
-                        min = dist;
-                        player = true;
+                        Vector3 aux2 = lt2[j].position;
+
+                        dist = Vector3.Distance(BodyParts[0].position, aux2);
+
+                        if ((dist < min && !objs2.gameObject.GetComponent<SnakeMovementReal>().invisible) || (dist < umbralDist && objs2.gameObject.GetComponent<SnakeMovementReal>().repelente && ID != objs2.GetComponent<SnakeMovementReal>().ID))
+                        {
+                            min = dist;
+                            player = true;
+                            posj = j;
+                        }
                     }
                 }
 
                 tam = 0;
                 if (player)
                 {
-                    res = objs2.GetComponent<SnakeMovementReal>().BodyParts[0].gameObject;
+                    res = objs2.GetComponent<SnakeMovementReal>().BodyParts[posj].gameObject;
                 }
                 else
                 {
-                    res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[0].gameObject;
+                    res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[posj].gameObject;
                 }
                 break;
             case 3: //Defensa

@@ -418,7 +418,7 @@ MonoBehaviour:
   Up: {fileID: 8629776909141279822, guid: 116ce0f5fa35f7b4f9b1970088b39a53, type: 3}
   snake: {fileID: 2892772363214851962, guid: 4dc99477cf9831945af387b06ba82d40, type: 3}
   snakep: {fileID: 3220188765267975480, guid: d397d50e41f6c1047a8d7d8f41e93a1a, type: 3}
-  UpsNumber: 130
+  UpsNumber: 85
   SnakeNumber: 60
   velocidad: 20
   invisible: 20

@@ -59,7 +59,7 @@ public class Game : MonoBehaviour
         p.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
 
         //UNICAMENTE MODIFICAR ESTA VARIABLE PARA INDICAR EL PODER DEL JUGADOR (TIPO)
-        p.GetComponent<SnakeMovementReal>().setPoder(2);
+        p.GetComponent<SnakeMovementReal>().setPoder(0);
     }
 
     // Update is called once per frame
