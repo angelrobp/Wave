@@ -90,22 +90,25 @@ public class SnakeMovementIA : MonoBehaviour
         for (int i = 0; i < objs1.Length; i++)
         {
 
-            List<Transform> aux1 = objs1[i].GetComponent<SnakeMovementIA>().BodyParts;
-             
-            //Comprobamos la distancia entre si cabeza y nuestra cola
-            dist = Vector3.Distance(BodyParts[BodyParts.Count-1].position, aux1[0].position);
-
-            if (dist < min && ID != objs1[i].GetComponent<SnakeMovementIA>().ID)
+            if (!objs1[i].GetComponent<SnakeMovementIA>().invisible)
             {
-                min = dist;
-                pos = i;
+                List<Transform> aux1 = objs1[i].GetComponent<SnakeMovementIA>().BodyParts;
+
+                //Comprobamos la distancia entre si cabeza y nuestra cola
+                dist = Vector3.Distance(BodyParts[BodyParts.Count - 1].position, aux1[0].position);
+
+                if (dist < min && ID != objs1[i].GetComponent<SnakeMovementIA>().ID)
+                {
+                    min = dist;
+                    pos = i;
+                }
             }
         }
 
         //Comprobamos lo mismo con el jugador
-        if (objs2 != null)
+        if (objs2 != null && !objs2.GetComponent<SnakeMovementReal>().invisible)
         {
-           List<Transform> aux2 = objs2.GetComponent<SnakeMovementReal>().BodyParts;
+            List<Transform> aux2 = objs2.GetComponent<SnakeMovementReal>().BodyParts;
 
             dist = Vector3.Distance(BodyParts[BodyParts.Count-1].position, aux2[0].position);
 
@@ -136,21 +139,24 @@ public class SnakeMovementIA : MonoBehaviour
         for (int i = 0; i < objs1.Length; i++)
         {
 
-            List<Transform> aux1 = objs1[i].GetComponent<SnakeMovementIA>().BodyParts;
-
-            if (aux1 != null)
+            if (!objs1[i].GetComponent<SnakeMovementIA>().invisible)
             {
-                dist = Vector3.Distance(BodyParts[0].position, aux1[aux1.Count - 1].position);
+                List<Transform> aux1 = objs1[i].GetComponent<SnakeMovementIA>().BodyParts;
 
-                if (dist < min && ID != objs1[i].GetComponent<SnakeMovementIA>().ID)
+                if (aux1 != null)
                 {
-                    min = dist;
-                    pos = i;
+                    dist = Vector3.Distance(BodyParts[0].position, aux1[aux1.Count - 1].position);
+
+                    if (dist < min && ID != objs1[i].GetComponent<SnakeMovementIA>().ID)
+                    {
+                        min = dist;
+                        pos = i;
+                    }
                 }
             }
         }
 
-        if (objs2 != null)
+        if (objs2 != null && !objs2.GetComponent<SnakeMovementReal>().invisible)
         {
             List<Transform> aux2 = objs2.GetComponent<SnakeMovementReal>().BodyParts;
 
@@ -518,7 +524,21 @@ public class SnakeMovementIA : MonoBehaviour
                             if (dist < umbralDist && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente && ID != objs[i].GetComponent<SnakeMovementIA>().ID)
                             {
                                 pos = i;
-                                posj = j;
+
+                                dist = Vector3.Distance(BodyParts[0].position, lt[0].position);
+                                min = dist;
+                                posj = 0;
+
+                                for (int t = 0; t < lt.Count; t++)
+                                {
+                                    dist = Vector3.Distance(BodyParts[0].position, lt[t].position);
+
+                                    if (dist < min)
+                                    {
+                                        posj = t;
+                                        min = dist;
+                                    }
+                                }
                                 break;
                             }
                         }
