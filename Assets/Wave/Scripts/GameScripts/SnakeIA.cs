@@ -46,7 +46,7 @@ public class SnakeIA : MonoBehaviour
                 Game.GenerateUp();
             GetComponentInParent<SnakeMovementIA>().sumarVida(20);
         }
-        if(other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementIA>() != null)
+        if(other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementIA>() != null && !gameObject.GetComponentInParent<SnakeMovementIA>().repelente)
         {
             if(other.GetComponentInParent<SnakeMovementIA>().ID != ID)
             {
@@ -56,7 +56,7 @@ public class SnakeIA : MonoBehaviour
                 GetComponentInParent<SnakeMovementIA>().sumarVida(50);
             }
         }
-        if (other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementReal>() != null)
+        if (other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementReal>() != null && !gameObject.GetComponentInParent<SnakeMovementIA>().repelente)
         {
             if(other.GetComponentInParent<SnakeMovementReal>().ID != ID)
             {

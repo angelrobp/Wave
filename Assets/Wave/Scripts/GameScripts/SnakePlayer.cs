@@ -46,7 +46,7 @@ public class SnakePlayer : MonoBehaviour{
                 Game.GenerateUp();
             GetComponentInParent<SnakeMovementReal>().sumarVida(20);
         }
-        if (other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementIA>() != null)
+        if (other.gameObject.tag == "bodypart" && other.GetComponentInParent<SnakeMovementIA>() != null && !gameObject.GetComponentInParent<SnakeMovementReal>().repelente)
         {
             if(other.GetComponentInParent<SnakeMovementIA>().ID != ID)
             {
