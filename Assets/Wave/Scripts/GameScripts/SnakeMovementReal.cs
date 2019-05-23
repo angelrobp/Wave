@@ -326,26 +326,45 @@ public class SnakeMovementReal : MonoBehaviour
     {
         float dist = 0.0f;
         int pos = -1;
+        int posj = -1;
+        bool repel = false;
+        float min = Mathf.Infinity;
 
         //Se recorren todas las serpientes del mapa
         GameObject[] objs = GameObject.FindGameObjectsWithTag("snakes");
 
         for (int i = 0; i < objs.Length; i++)
         {
-            //Se comprueba la distancia entre la serpiente jugador y el resto de serpientes.
-            dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[0].position);
+            List<Transform> lt = objs[i].GetComponent<SnakeMovementIA>().BodyParts;
 
-            if (dist < objs[i].GetComponent<SnakeMovementIA>().umbralDist && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente)
+            //Se recorren cada una de las vidas de la serpiente
+            for (int j = 0; j < lt.Count; j++)
             {
-                pos = i;
-                break;
+
+                if (lt[j] != null)
+                {
+                    Vector3 aux1 = lt[j].position;
+
+                    //Se comprueba la distancia entre nuestra cabeza y una vida determinada de la serpiente enemiga
+                    dist = Vector3.Distance(BodyParts[0].position, aux1);
+
+                    if (dist < objs[i].GetComponent<SnakeMovementIA>().umbralDist && dist < min && objs[i].gameObject.GetComponent<SnakeMovementIA>().repelente)
+                    {
+                        pos = i;
+                        posj = j;
+                        min = dist;
+                        repel = true;
+                    }
+                }
             }
+
+            if (repel) break;
         }
 
         //Si efectivamente tenemos dentro de nuestro rango de vision una serpiente repelente, nos alejamos de ella automáticamente.
         if(pos >= 0)
         {
-            GameObject res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[0].gameObject;
+            GameObject res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[posj].gameObject;
 
             Move(res);
         }
