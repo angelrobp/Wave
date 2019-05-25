@@ -9,6 +9,10 @@ TagManager:
   - snakes
   - snakep
   - bodypart
+  - Background
+  - BG_Stars
+  - BG_Stars_Invert
+  - textoSeleccion
   layers:
   - Default
   - TransparentFX

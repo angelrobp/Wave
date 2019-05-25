@@ -48,6 +48,8 @@ MonoBehaviour:
   - {fileID: 3844093768192240159}
   mindistance: 50000
   vida: 100
+  repelente: 0
+  invisible: 0
   beginsize: 1
   ID: 0
   speed: 350
@@ -191,4 +193,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
-  crecer: 0

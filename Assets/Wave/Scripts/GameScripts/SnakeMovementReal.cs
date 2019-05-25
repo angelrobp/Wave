@@ -5,6 +5,7 @@ using UnityEngine;
 //Clase que lleva la lógica de la serpiente en sí (controlada por el jugador)
 public class SnakeMovementReal : MonoBehaviour
 {
+    
     public List<Transform> BodyParts = new List<Transform>();
 
     public float mindistance = 50000.0f;
@@ -37,6 +38,10 @@ public class SnakeMovementReal : MonoBehaviour
     private Transform curBodyPart;
     private Transform PrevBodyPart;
 
+    // Control del menu del jugador
+    private GameObject pausa;
+    private bool pausaActiva;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,11 +49,19 @@ public class SnakeMovementReal : MonoBehaviour
         {
             AddBodyPart();
         }
+
+        //Creación menu pausa
+        pausa = GameObject.Find("Menu Pausa");
+        pausaActiva = false;
+        pausa.SetActive(pausaActiva);
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        updateMenu(); 
+
         updateCollider();
 
         updatePoder();
@@ -56,6 +69,24 @@ public class SnakeMovementReal : MonoBehaviour
         updateRecarga();
 
         Move();
+    }
+
+    //Muestra u oculta el menu
+    public void updateMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pausaActiva)
+            {
+                pausaActiva = false;
+
+            }
+            else
+            {
+                pausaActiva = true;
+            }
+            pausa.SetActive(pausaActiva);
+        }
     }
 
     //Lleva el control de los collider, activando y desactivando para que únicamente esté activa la última vida.

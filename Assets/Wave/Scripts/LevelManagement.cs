@@ -11,6 +11,16 @@ public class LevelManagement : MonoBehaviour
         SceneManager.LoadScene(nombreNivel);
     }
 
+    public void jugar()
+    {
+        Application.Quit();
+    }
+
+    public void volverAMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     // Cierra el programa. Es llamado al pulsar la opción salir del menú
     public void salir()
     {
