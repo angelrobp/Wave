@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Wave/Scenes/Game.unity
     guid: 65efdd741c2c1804f84decd13f5dd67b
+  - enabled: 1
+    path: Assets/Wave/Scenes/Seleccion.unity
+    guid: 6853abe46aaad644fae9a5725a3da441
   m_configObjects: {}

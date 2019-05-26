@@ -1,27 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Clase que lleva la lógica de la serpiente en sí (controlada por el jugador)
 public class SnakeMovementReal : MonoBehaviour
 {
-    
+    private GameObject objectLevelManagement;
+
     public List<Transform> BodyParts = new List<Transform>();
 
     public float mindistance = 50000.0f;
     public int vida = 100;
-    Color orange = new Color(1.0f,0.5251f,0.0f);
+    Color material = new Color(1.0f,0.5251f,0.0f);
 
     private int tipoPoder;
     private int trecarga;
     private int tduracion;
-    private bool poderActivo = false;
+    public bool poderActivo = false;
     private bool enRecarga = false;
 
     public bool repelente = false;
     public bool invisible = false;
 
-    private double lastTime;
+    private float lastTime;
 
     public int beginsize;
 
@@ -45,7 +47,8 @@ public class SnakeMovementReal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < beginsize-1; i++)
+
+        for (int i = 0; i < beginsize-1; i++)
         {
             AddBodyPart();
         }
@@ -177,7 +180,7 @@ public class SnakeMovementReal : MonoBehaviour
         BodyParts.Add(newpart);
 
 
-        BodyParts[BodyParts.Count - 1].gameObject.GetComponent<Renderer>().material.color = orange;
+        BodyParts[BodyParts.Count - 1].gameObject.GetComponent<Renderer>().material.color = material;
     }
 
     //Funcion que elimina la última vida de la serpiente.
@@ -187,6 +190,8 @@ public class SnakeMovementReal : MonoBehaviour
         if(BodyParts.Count == 1)
         {
             Destroy(this.gameObject);
+            objectLevelManagement = GameObject.Find("EventSystem");
+            objectLevelManagement.GetComponent<LevelManagement>().volverAMenu();
         }
     }
 
@@ -202,10 +207,44 @@ public class SnakeMovementReal : MonoBehaviour
         vida -= n;
     }
 
+    public float getLastTime()
+    {
+        return lastTime;
+    }
+    //Funcion para devolver valor de la variable tduracion
+    public int getTDuracion()
+    {
+        return tduracion;
+    }
+
+    //Funcion para devolver valor de la variable trecarga
+    public int getTRecarga()
+    {
+        return trecarga;
+    }
+
+    //Funcion para devolver valor de la variable enRecarga
+    public bool isEnRecarga()
+    {
+        return enRecarga;
+    }
+
+    //Funcion para devolver valor de la variable poderActivo
+    public bool isPoderActivo()
+    {
+        return poderActivo;
+    }
+
+    //Funcion que se utiliza al comienzo del juego para indicar el color de la serpiente jugador
+    public void setMaterial(Color newMaterial)
+    {
+        material = newMaterial;
+        //GameObject.FindGameObjectWithTag("snakep").gameObject.GetComponent<Renderer>().material.color = material;
+    }
+
     //Funcion que se utiliza al comienzo del juego para indicar el poder de la serpiente jugador
     public void setPoder(int value)
     {
-
         tipoPoder = value;
 
         switch (value)
@@ -244,7 +283,7 @@ public class SnakeMovementReal : MonoBehaviour
     private void updatePoder()
     {
         float seconds = getSeconds();
-
+        
         if (seconds >= tduracion && poderActivo)
         {
             poderActivo = false;
@@ -302,7 +341,7 @@ public class SnakeMovementReal : MonoBehaviour
         {
             for (int i = 0; i < BodyParts.Count; i++)
             {
-                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = orange;
+                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = material;
             }
             BodyParts[BodyParts.Count - 1].gameObject.GetComponent<SphereCollider>().enabled = true;
         }
@@ -317,7 +356,7 @@ public class SnakeMovementReal : MonoBehaviour
         for (int i = 0; i < BodyParts.Count; i++)
         {
             BodyParts[i].gameObject.GetComponent<SphereCollider>().enabled = false;
-            Color cn = orange;
+            Color cn = material;
             cn.a = 0.3f;
             BodyParts[i].gameObject.GetComponent<Renderer>().material.color = cn;
         }
@@ -333,7 +372,7 @@ public class SnakeMovementReal : MonoBehaviour
         {
             for (int i = 0; i < BodyParts.Count; i++)
             {
-                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = orange;
+                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = material;
             }
             BodyParts[BodyParts.Count - 1].gameObject.GetComponent<SphereCollider>().enabled = true;
             BodyParts[0].gameObject.GetComponent<SphereCollider>().enabled = true;

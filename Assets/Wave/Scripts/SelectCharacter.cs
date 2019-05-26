@@ -9,9 +9,8 @@ public class SelectCharacter : MonoBehaviour
     private int selectedCharacterIndex = 1;
     private Color desiredColor;
 
-    [Header("List of characters")]
-    [SerializeField]
-    private List<CharacterSelectObject> characterList = new List<CharacterSelectObject>();
+    private GameObject objectEstadoJuego;
+    private EstadoJuego estadoJuego;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI characterNamePower;
@@ -25,14 +24,26 @@ public class SelectCharacter : MonoBehaviour
 
     private void Start ()
     {
-        for (int i=0; i<characterList.Count; i++)
-        {
-            personaje = characterList[i].personaje;
-            personaje.SetActive(false);
-        }
+
+        objectEstadoJuego = GameObject.FindGameObjectWithTag("EstadoJuego");
+        estadoJuego = objectEstadoJuego.GetComponent<EstadoJuego>();
+
+        selectedCharacterIndex = estadoJuego.personajeSeleccionado.power;
+
+        personaje = GameObject.FindGameObjectWithTag("SelectorPersonaje");
+        personaje.SetActive(false);
 
         characterNamePower = TextMeshProUGUI.FindObjectOfType<TextMeshProUGUI>();
         UpdateCharacterSelectionUI();
+    }
+
+    public void SelectCharacterButton()
+    {
+        personaje.SetActive(false);
+
+        estadoJuego.personajeSeleccionado.setPower(estadoJuego.getCharactersList()[selectedCharacterIndex].power);
+        estadoJuego.personajeSeleccionado.setCharacterNamePower(estadoJuego.getCharactersList()[selectedCharacterIndex].characterNamePower);
+        estadoJuego.personajeSeleccionado.setCharacterColor(estadoJuego.getCharactersList()[selectedCharacterIndex].characterColor);
     }
 
     public void LeftArrow()
@@ -41,7 +52,7 @@ public class SelectCharacter : MonoBehaviour
         selectedCharacterIndex--;
         if (selectedCharacterIndex < 0)
         {
-            selectedCharacterIndex = characterList.Count - 1;
+            selectedCharacterIndex = estadoJuego.getCharactersList().Count - 1;
         }
         UpdateCharacterSelectionUI();
     }
@@ -50,7 +61,7 @@ public class SelectCharacter : MonoBehaviour
     {
         personaje.SetActive(false);
         selectedCharacterIndex++;
-        if (selectedCharacterIndex == characterList.Count)
+        if (selectedCharacterIndex == estadoJuego.getCharactersList().Count)
         {
             selectedCharacterIndex = 0;
         }
@@ -58,37 +69,11 @@ public class SelectCharacter : MonoBehaviour
     }
 
     private void UpdateCharacterSelectionUI()
-    {/*
-        switch (selectedCharacterIndex)
-        {
-            case 1:
-                personaje = GameObject.Find("PersonajeVelocidad");
-                personaje.SetActive(true);
-                break;
-            case 2:
-                personaje = GameObject.Find("PersonajeInvisibilidad");
-                personaje.SetActive(true);
-                break;
-            case 3:
-                personaje = GameObject.Find("PersonajeRepulsion");
-                personaje.SetActive(true);
-                break;
-        }
-        */
-        personaje = characterList[selectedCharacterIndex].personaje;
-        personaje.SetActive(true);
-        characterNamePower.text = characterList[selectedCharacterIndex].characterNamePower;
-        personaje.GetComponent<Renderer>().material.color = characterList[selectedCharacterIndex].characterColor;
-
-
-    }
-
-    [System.Serializable]
-    public class CharacterSelectObject
     {
-        public GameObject personaje;
-        public string characterNamePower;
-        public Color characterColor;
+        personaje.SetActive(true);
+        characterNamePower.text = "Poder especial: " + estadoJuego.getCharactersList()[selectedCharacterIndex].characterNamePower;
+        personaje.GetComponent<Renderer>().material.color = estadoJuego.getCharactersList()[selectedCharacterIndex].characterColor;
+
 
     }
 

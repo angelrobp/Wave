@@ -13,6 +13,13 @@ TagManager:
   - BG_Stars
   - BG_Stars_Invert
   - textoSeleccion
+  - SelectorPersonaje
+  - EstadoJuego
+  - TextTime
+  - TextPlayers
+  - TextPower
+  - TextReload1
+  - TextReload2
   layers:
   - Default
   - TransparentFX
