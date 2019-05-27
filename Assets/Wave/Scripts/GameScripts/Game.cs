@@ -22,13 +22,13 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     public int UpsNumber = 200;
-    [SerializeField]
-    private int SnakeNumber = 50;
 
     [SerializeField]
     private int velocidad= 0;
     [SerializeField]
     private int invisible = 0;
+    [SerializeField]
+    private int repulsion = 0;
 
     //Temporizador
     [SerializeField]
@@ -36,6 +36,7 @@ public class Game : MonoBehaviour
     private int secondsTimer;
     private int minutesTimer;
 
+    private int SnakeNumber;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +44,7 @@ public class Game : MonoBehaviour
         mainTimer = 15f*60f;
 
         staticUp = Up;
+        SnakeNumber = velocidad + invisible + repulsion;
         int liminv = velocidad + invisible;
 
         personaje = Instantiate(snakep);
@@ -113,13 +115,13 @@ public class Game : MonoBehaviour
         GameObject.FindGameObjectWithTag("TextPlayers").GetComponent<Text>().text = (snakes.Length + 1) + "/" + (SnakeNumber + 1);
         
         //Contadores de tiempos de partida, recarga y duración de poder
-        if (personaje.GetComponent<SnakeMovementReal>().isEnRecarga())
+        if (personaje != null && personaje.GetComponent<SnakeMovementReal>().isEnRecarga())
         {
             GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Recargando: ";
             float timeToAction = personaje.GetComponent<SnakeMovementReal>().getTRecarga() - Mathf.RoundToInt((Time.realtimeSinceStartup - personaje.GetComponent<SnakeMovementReal>().getLastTime()));
             GameObject.FindGameObjectWithTag("TextReload2").GetComponent<Text>().text = timeToAction + "\"";
         }
-        else if (personaje.GetComponent<SnakeMovementReal>().isPoderActivo())
+        else if (personaje != null && personaje.GetComponent<SnakeMovementReal>().isPoderActivo())
         {
             GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duracion Poder: ";
             float timeToAction = personaje.GetComponent<SnakeMovementReal>().getTDuracion() - Mathf.RoundToInt((Time.realtimeSinceStartup - personaje.GetComponent<SnakeMovementReal>().getLastTime()));

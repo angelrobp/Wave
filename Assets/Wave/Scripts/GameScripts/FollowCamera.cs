@@ -34,12 +34,19 @@ public class FollowCamera : MonoBehaviour
 
         int vida = this.GetComponent<SnakePlayer>().GetVida();
 
-        if(camera.GetComponent<Camera>().orthographicSize <= vida+1300)
+        if(camera.GetComponent<Camera>().orthographicSize <= vida+1700)
         {
             camera.GetComponent<Camera>().orthographicSize *= 1.00025f;
             background.GetComponent<BG_Scroll>().transform.localScale *= 1.00025f;
             stars.GetComponent<BG_Scroll>().transform.localScale *= 1.00025f;
             stars_I.GetComponent<BG_Scroll>().transform.localScale *= 1.00025f;
+        }
+        else if(camera.GetComponent<Camera>().orthographicSize >= vida + 2000)
+        {
+            camera.GetComponent<Camera>().orthographicSize /= 1.00025f;
+            background.GetComponent<BG_Scroll>().transform.localScale /= 1.00025f;
+            stars.GetComponent<BG_Scroll>().transform.localScale /= 1.00025f;
+            stars_I.GetComponent<BG_Scroll>().transform.localScale /= 1.00025f;
         }
             
     }
