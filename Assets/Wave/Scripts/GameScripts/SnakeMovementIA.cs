@@ -139,11 +139,11 @@ public class SnakeMovementIA : MonoBehaviour
         for (int i = 0; i < objs1.Length; i++)
         {
 
-            if (!objs1[i].GetComponent<SnakeMovementIA>().invisible)
+            if (objs1[i] != null && !objs1[i].GetComponent<SnakeMovementIA>().invisible)
             {
                 List<Transform> aux1 = objs1[i].GetComponent<SnakeMovementIA>().BodyParts;
 
-                if (aux1 != null)
+                if (aux1 != null && BodyParts.Count > 0)
                 {
                     dist = Vector3.Distance(BodyParts[0].position, aux1[aux1.Count - 1].position);
 
