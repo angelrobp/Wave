@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //Clase que lleva la lógica de la serpiente en sí (controlada por el jugador)
 public class SnakeMovementReal : MonoBehaviour
 {
-    private GameObject objectLevelManagement;
+    private Game game;
 
     public List<Transform> BodyParts = new List<Transform>();
 
@@ -47,7 +47,7 @@ public class SnakeMovementReal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        game = GameObject.FindGameObjectWithTag("game").GetComponent<Game>();
         for (int i = 0; i < beginsize-1; i++)
         {
             AddBodyPart();
@@ -190,8 +190,7 @@ public class SnakeMovementReal : MonoBehaviour
         if(BodyParts.Count == 1)
         {
             Destroy(this.gameObject);
-            objectLevelManagement = GameObject.Find("EventSystem");
-            objectLevelManagement.GetComponent<LevelManagement>().volverAMenu();
+            game.setEndGame(true);
         }
     }
 

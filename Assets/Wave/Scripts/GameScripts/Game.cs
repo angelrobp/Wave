@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
 
     private GameObject objectEstadoJuego, texto, personaje;
     private EstadoJuego estadoJuego;
+    private DamageCircle damageCircle;
 
     [SerializeField]
     private GameObject Up = null;
@@ -36,12 +37,36 @@ public class Game : MonoBehaviour
     private int secondsTimer;
     private int minutesTimer;
 
+    //Tamaño y Reducción del area
+    [SerializeField]
+    private float diametroArea;
+    private float decreaseArea;
+    private float lastTimeDecrease;
+        
+
     private int SnakeNumber;
+
+    private static bool endGame, winGame;
+
     // Start is called before the first frame update
     void Start()
     {
-        //incialización de tiempo de partida
+        endGame = false;
+        winGame = false;
+
+        //Incialización de tiempo de partida
         mainTimer = 15f*60f;
+
+        //Inicializo diametro del area
+        diametroArea = 14000;
+        damageCircle = GameObject.Find("DamageCircle").GetComponent<DamageCircle>();
+        damageCircle.SetCircleSize(new Vector3(0, 0), new Vector3(diametroArea, diametroArea));
+        
+        lastTimeDecrease = Time.realtimeSinceStartup;
+
+        //Calculo reducción de area en función del tiempo de duración de la partida
+        decreaseArea = diametroArea/mainTimer;
+
 
         staticUp = Up;
         SnakeNumber = velocidad + invisible + repulsion;
@@ -86,15 +111,47 @@ public class Game : MonoBehaviour
         GameObject.FindGameObjectWithTag("TextTime").GetComponent<Text>().text = "15'00\"";
         GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duracion Poder: ";
 
+    }
 
+    public void setEndGame (bool newEndGame)
+    {
+        endGame = newEndGame;
+    }
+
+    public bool isEndGame()
+    {
+        return endGame;
+    }
+
+    public void setWinGame(bool newWinGame)
+    {
+        winGame = newWinGame;
+    }
+
+    public bool isWinGame()
+    {
+        return winGame;
     }
 
     // Update is called once per frame
     void Update()
     {
         updateText();
+        updateArea();
     }
 
+    //Actualización de tamaño del area en función del tiempo transcurrido
+    public void updateArea()
+    {
+        float newTime = Time.realtimeSinceStartup - lastTimeDecrease;
+        if (newTime >= 1)
+        {
+            diametroArea -= decreaseArea;
+            damageCircle.SetCircleSize(new Vector3(0, 0), new Vector3(diametroArea, diametroArea));
+            lastTimeDecrease = Time.realtimeSinceStartup;
+        }
+        
+    }
     //Actualización del tiempo de la partida
     public void updateTime()
     {
