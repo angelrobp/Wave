@@ -152,9 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c947a2c0e8dd489c346567e4ebf12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parralax: 2
+  parallax: 2
   scroll_Speed: 0.05
   invertMovement: 0
+  menu: 0
 --- !u!64 &29551830
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -402,6 +403,7 @@ GameObject:
   - component: {fileID: 150192216}
   - component: {fileID: 150192215}
   - component: {fileID: 150192214}
+  - component: {fileID: 150192217}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -472,15 +474,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 920283592}
-        m_MethodName: cargarNivel
-        m_Mode: 5
+      - m_Target: {fileID: 1044278807}
+        m_MethodName: AbandonarPartida
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Menu
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 968658309}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -522,6 +535,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150192212}
   m_CullTransparentMesh: 0
+--- !u!114 &150192217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150192212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 968658310}
+          m_MethodName: PlaySFX
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 8300000, guid: 041537f729a498949a01e3031ee6f738,
+              type: 3}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &322634723
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,9 +909,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c947a2c0e8dd489c346567e4ebf12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parralax: 2.5
+  parallax: 2
   scroll_Speed: 0.05
   invertMovement: 1
+  menu: 0
 --- !u!64 &602302834
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1159,7 +1204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.084, b: 0, a: 0.89411765}
+  m_Color: {r: 1, g: 0.08235294, b: 0, a: 0.89411765}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1220,9 +1265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591c947a2c0e8dd489c346567e4ebf12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parralax: 2.7
+  parallax: 2
   scroll_Speed: 0.05
   invertMovement: 0
+  menu: 0
 --- !u!64 &811461237
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1454,6 +1500,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &968658309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 968658311}
+  - component: {fileID: 968658310}
+  m_Layer: 0
+  m_Name: ControllerSongs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &968658310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968658309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8f1c3789803984a83f99e282dc2830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &968658311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968658309}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.21999991, z: 0}
+  m_LocalScale: {x: 30, y: 30.000015, z: 30.000015}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &985327753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,6 +1682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fba5d537ebacc458424b1c8159f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transicionEnPartida: 1
   animator: {fileID: 1044278806}
 --- !u!1 &1197708339
 GameObject:
@@ -1685,6 +1775,7 @@ GameObject:
   - component: {fileID: 1328275834}
   - component: {fileID: 1328275833}
   - component: {fileID: 1328275832}
+  - component: {fileID: 1328275835}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1755,15 +1846,27 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 920283591}
-        m_MethodName: 
-        m_Mode: 5
+      - m_Target: {fileID: 968658310}
+        m_MethodName: PlaySFX
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 49223daa3389830489ad46e68653d5e0,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Game
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1923700355}
+        m_MethodName: setActiveMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Game
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1805,6 +1908,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328275830}
   m_CullTransparentMesh: 0
+--- !u!114 &1328275835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328275830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 968658310}
+          m_MethodName: PlaySFX
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 8300000, guid: 041537f729a498949a01e3031ee6f738,
+              type: 3}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &1470602144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2825,7 +2959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2145091287
 RectTransform:
   m_ObjectHideFlags: 0

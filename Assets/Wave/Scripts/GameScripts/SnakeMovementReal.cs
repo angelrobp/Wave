@@ -39,11 +39,7 @@ public class SnakeMovementReal : MonoBehaviour
     private float dis;
     private Transform curBodyPart;
     private Transform PrevBodyPart;
-
-    // Control del menu del jugador
-    private GameObject pausa;
-    private bool pausaActiva;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -52,18 +48,11 @@ public class SnakeMovementReal : MonoBehaviour
         {
             AddBodyPart();
         }
-
-        //Creación menu pausa
-        pausa = GameObject.Find("Menu Pausa");
-        pausaActiva = false;
-        pausa.SetActive(pausaActiva);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        updateMenu(); 
 
         updateCollider();
 
@@ -73,24 +62,7 @@ public class SnakeMovementReal : MonoBehaviour
 
         Move();
     }
-
-    //Muestra u oculta el menu
-    public void updateMenu()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (pausaActiva)
-            {
-                pausaActiva = false;
-
-            }
-            else
-            {
-                pausaActiva = true;
-            }
-            pausa.SetActive(pausaActiva);
-        }
-    }
+    
 
     //Lleva el control de los collider, activando y desactivando para que únicamente esté activa la última vida.
     public void updateCollider()
@@ -237,8 +209,10 @@ public class SnakeMovementReal : MonoBehaviour
     //Funcion que se utiliza al comienzo del juego para indicar el color de la serpiente jugador
     public void setMaterial(Color newMaterial)
     {
+        Debug.Log("Color" + newMaterial);
         material = newMaterial;
-        //GameObject.FindGameObjectWithTag("snakep").gameObject.GetComponent<Renderer>().material.color = material;
+        material.a = 1f;
+        changeColor(material);
     }
 
     //Funcion que se utiliza al comienzo del juego para indicar el poder de la serpiente jugador
@@ -324,12 +298,17 @@ public class SnakeMovementReal : MonoBehaviour
         }
 
         //Se cambia el color de la serpiente para indicar el estado de repelente
-        for (int i = 0; i < BodyParts.Count; i++)
-        {
-            BodyParts[i].gameObject.GetComponent<Renderer>().material.color = Color.blue;
-        }
+        changeColor(Color.blue);
     }
 
+    //Funcion para cambiar el color de la serpiente
+    public void changeColor (Color newMaterial)
+    {
+        for (int i = 0; i < BodyParts.Count; i++)
+        {
+            BodyParts[i].gameObject.GetComponent<Renderer>().material.color = newMaterial;
+        }
+    }
     //Funcion que resetea a la serpiente despues de haber usado un poder repelente
     public void resetRepelente()
     {
@@ -338,10 +317,7 @@ public class SnakeMovementReal : MonoBehaviour
         //Vuelve a dejar a la serpiente en estado normal
         if (BodyParts.Count > 0)
         {
-            for (int i = 0; i < BodyParts.Count; i++)
-            {
-                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = material;
-            }
+            changeColor(material);
             BodyParts[BodyParts.Count - 1].gameObject.GetComponent<SphereCollider>().enabled = true;
         }
     }
@@ -369,10 +345,7 @@ public class SnakeMovementReal : MonoBehaviour
         //Vuelve a dejar a la serpiente en estado normal
         if (BodyParts.Count > 0)
         {
-            for (int i = 0; i < BodyParts.Count; i++)
-            {
-                BodyParts[i].gameObject.GetComponent<Renderer>().material.color = material;
-            }
+            changeColor(material);
             BodyParts[BodyParts.Count - 1].gameObject.GetComponent<SphereCollider>().enabled = true;
             BodyParts[0].gameObject.GetComponent<SphereCollider>().enabled = true;
         }

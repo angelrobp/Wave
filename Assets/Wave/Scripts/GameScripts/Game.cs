@@ -48,6 +48,10 @@ public class Game : MonoBehaviour
 
     private static bool endGame, winGame;
 
+    // Control del menu del jugador
+    private GameObject pausa;
+    private bool pausaActiva;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -103,16 +107,25 @@ public class Game : MonoBehaviour
         estadoJuego = objectEstadoJuego.GetComponent<EstadoJuego>();
 
         personaje.GetComponent<SnakeMovementReal>().setPoder(estadoJuego.personajeSeleccionado.power);
-        //p.GetComponent<SnakeMovementReal>().setMaterial(estadoJuego.personajeSeleccionado.characterColor);
-
+        personaje.GetComponent<SnakeMovementReal>().setMaterial(estadoJuego.personajeSeleccionado.characterColor);
         //Modifico información en pantalla
         GameObject.FindGameObjectWithTag("TextPower").GetComponent<Text>().text = estadoJuego.personajeSeleccionado.characterNamePower;
         GameObject.FindGameObjectWithTag("TextPlayers").GetComponent<Text>().text = (SnakeNumber+1) + "/" + (SnakeNumber+1);
         GameObject.FindGameObjectWithTag("TextTime").GetComponent<Text>().text = "15'00\"";
         GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duracion Poder: ";
 
+        //Creación menu pausa
+        pausa = GameObject.Find("Menu Pausa");
+        pausaActiva = false;
+        pausa.SetActive(pausaActiva);
+
     }
 
+    public void setActiveMenu ()
+    {
+        pausaActiva = !pausaActiva;
+        pausa.SetActive(pausaActiva);
+    }
     public void setEndGame (bool newEndGame)
     {
         endGame = newEndGame;
@@ -136,10 +149,41 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        updateMenu();
         updateText();
         updateArea();
+        updateFinalDePartida();
     }
 
+    //Muestra u oculta el menu
+    public void updateMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pausaActiva)
+            {
+                pausaActiva = false;
+
+            }
+            else
+            {
+                pausaActiva = true;
+            }
+            pausa.SetActive(pausaActiva);
+        }
+    }
+
+    //Recuento de jugadores con vida y final de tiempo
+    public void updateFinalDePartida()
+    {
+        
+        GameObject[] snakes = GameObject.FindGameObjectsWithTag("snakes");
+        if (((snakes.Length + 1) <= 1) || (mainTimer <= 0.0f))
+        {
+            setEndGame(true);
+            setWinGame(true);
+        }
+    }
     //Actualización de tamaño del area en función del tiempo transcurrido
     public void updateArea()
     {

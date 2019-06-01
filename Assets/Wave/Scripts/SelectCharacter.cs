@@ -39,11 +39,17 @@ public class SelectCharacter : MonoBehaviour
 
     public void SelectCharacterButton()
     {
-        personaje.SetActive(false);
+        //personaje.SetActive(false);
 
         estadoJuego.personajeSeleccionado.setPower(estadoJuego.getCharactersList()[selectedCharacterIndex].power);
         estadoJuego.personajeSeleccionado.setCharacterNamePower(estadoJuego.getCharactersList()[selectedCharacterIndex].characterNamePower);
         estadoJuego.personajeSeleccionado.setCharacterColor(estadoJuego.getCharactersList()[selectedCharacterIndex].characterColor);
+        AudioManager.Instance.PlaySFX(characterSelectMusic);
+    }
+
+    public void BackButton()
+    {
+        AudioManager.Instance.PlaySFX(arrowClickSFX);
     }
 
     public void LeftArrow()
@@ -55,6 +61,7 @@ public class SelectCharacter : MonoBehaviour
             selectedCharacterIndex = estadoJuego.getCharactersList().Count - 1;
         }
         UpdateCharacterSelectionUI();
+        AudioManager.Instance.PlaySFX(arrowClickSFX);
     }
 
     public void RightArrow()
@@ -66,6 +73,7 @@ public class SelectCharacter : MonoBehaviour
             selectedCharacterIndex = 0;
         }
         UpdateCharacterSelectionUI();
+        AudioManager.Instance.PlaySFX(arrowClickSFX);
     }
 
     private void UpdateCharacterSelectionUI()
@@ -73,13 +81,5 @@ public class SelectCharacter : MonoBehaviour
         personaje.SetActive(true);
         characterNamePower.text = "Poder especial: " + estadoJuego.getCharactersList()[selectedCharacterIndex].characterNamePower;
         personaje.GetComponent<Renderer>().material.color = estadoJuego.getCharactersList()[selectedCharacterIndex].characterColor;
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
