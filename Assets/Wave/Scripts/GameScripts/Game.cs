@@ -109,10 +109,10 @@ public class Game : MonoBehaviour
         personaje.GetComponent<SnakeMovementReal>().setPoder(estadoJuego.personajeSeleccionado.power);
         personaje.GetComponent<SnakeMovementReal>().setMaterial(estadoJuego.personajeSeleccionado.characterColor);
         //Modifico información en pantalla
-        GameObject.FindGameObjectWithTag("TextPower").GetComponent<Text>().text = estadoJuego.personajeSeleccionado.characterNamePower;
+        GameObject.FindGameObjectWithTag("TextPower").GetComponent<Text>().text = "Poder: " + estadoJuego.personajeSeleccionado.characterNamePower;
         GameObject.FindGameObjectWithTag("TextPlayers").GetComponent<Text>().text = (SnakeNumber+1) + "/" + (SnakeNumber+1);
         GameObject.FindGameObjectWithTag("TextTime").GetComponent<Text>().text = "15'00\"";
-        GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duracion Poder: ";
+        GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Poder Listo";
 
         //Creación menu pausa
         pausa = GameObject.Find("Menu Pausa");
@@ -218,20 +218,17 @@ public class Game : MonoBehaviour
         //Contadores de tiempos de partida, recarga y duración de poder
         if (personaje != null && personaje.GetComponent<SnakeMovementReal>().isEnRecarga())
         {
-            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Recargando: ";
             float timeToAction = personaje.GetComponent<SnakeMovementReal>().getTRecarga() - Mathf.RoundToInt((Time.realtimeSinceStartup - personaje.GetComponent<SnakeMovementReal>().getLastTime()));
-            GameObject.FindGameObjectWithTag("TextReload2").GetComponent<Text>().text = timeToAction + "\"";
+            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Recargando: " + timeToAction + "\"";
         }
         else if (personaje != null && personaje.GetComponent<SnakeMovementReal>().isPoderActivo())
         {
-            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duracion Poder: ";
             float timeToAction = personaje.GetComponent<SnakeMovementReal>().getTDuracion() - Mathf.RoundToInt((Time.realtimeSinceStartup - personaje.GetComponent<SnakeMovementReal>().getLastTime()));
-            GameObject.FindGameObjectWithTag("TextReload2").GetComponent<Text>().text = timeToAction + "\"";
+            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Duración Poder: " + timeToAction + "\"";
         }
         else
         {
-            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Poder Preparado";
-            GameObject.FindGameObjectWithTag("TextReload2").GetComponent<Text>().text = "";
+            GameObject.FindGameObjectWithTag("TextReload1").GetComponent<Text>().text = "Poder Listo";
         }
         updateTime();
         
