@@ -24,6 +24,21 @@ public class SnakeIA : MonoBehaviour
             sm.AddBodyPart();
         }
 
+        if (menosVida())
+        {
+            SnakeMovementIA sm = gameObject.GetComponentInParent<SnakeMovementIA>();
+
+            GameObject go = sm.BodyParts[sm.BodyParts.Count - 1].gameObject;
+            sm.RemoveBodyPart();
+            Destroy(go.gameObject);
+        }
+
+    }
+
+    public bool menosVida()
+    {
+        if (Mathf.Floor(GetComponentInParent<SnakeMovementIA>().vida / 100) < gameObject.GetComponentInParent<SnakeMovementIA>().BodyParts.Count-1) return true;
+        return false;
     }
 
     //Comprueba si tenemos que crecer dependiendo de la vida que tenemos.

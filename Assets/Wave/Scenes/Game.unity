@@ -762,7 +762,7 @@ GameObject:
   - component: {fileID: 458791661}
   m_Layer: 0
   m_Name: DamageCircle
-  m_TagString: Untagged
+  m_TagString: circle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2435,11 +2435,11 @@ MonoBehaviour:
   snake: {fileID: 2892772363214851962, guid: 4dc99477cf9831945af387b06ba82d40, type: 3}
   snakep: {fileID: 3220188765267975480, guid: d397d50e41f6c1047a8d7d8f41e93a1a, type: 3}
   UpsNumber: 90
-  velocidad: 20
-  invisible: 20
-  repulsion: 19
+  velocidad: 23
+  invisible: 22
+  repulsion: 14
   mainTimer: 10
-  diametroArea: 0
+  diametroArea: 21000
 --- !u!4 &1923700356
 Transform:
   m_ObjectHideFlags: 0

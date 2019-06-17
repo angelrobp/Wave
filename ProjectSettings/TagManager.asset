@@ -20,6 +20,7 @@ TagManager:
   - TextPower
   - TextReload1
   - TextReload2
+  - circle
   layers:
   - Default
   - TransparentFX

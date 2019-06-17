@@ -19,18 +19,20 @@ public class SnakeMovementReal : MonoBehaviour
     private int tduracion;
     public bool poderActivo = false;
     private bool enRecarga = false;
+    private bool cuentoSegundos = true;
 
     public bool repelente = false;
     public bool invisible = false;
 
     private float lastTime;
+    private float lastTime2;
 
     public int beginsize;
 
     public int ID = 0;
 
     public float speed = 350;
-    public float angle_increment = 0.03f;
+    public float angle_increment = 0.6f;
     public float dir_angle = 0;
     //public float rotationspeed = 50;
 
@@ -39,6 +41,8 @@ public class SnakeMovementReal : MonoBehaviour
     private float dis;
     private Transform curBodyPart;
     private Transform PrevBodyPart;
+
+    private int danio = 150;
     
     // Start is called before the first frame update
     void Start()
@@ -56,13 +60,57 @@ public class SnakeMovementReal : MonoBehaviour
 
         updateCollider();
 
+        updateNube();
+
         updatePoder();
 
         updateRecarga();
 
         Move();
     }
-    
+
+
+    //comprueba si estamos en la nube
+    private void updateNube()
+    {
+        if (estoyCirculo())
+        {
+            int seconds = cuantosSegundos();
+
+            if (seconds > 1)
+            {
+                this.restarVida((int)(this.danio/(Game.getTimer_Static()/60f)));
+                cuentoSegundos = true;
+            }
+        }
+        else cuentoSegundos = true;
+    }
+
+    private int cuantosSegundos()
+    {
+
+        int seconds = 0;
+        if (cuentoSegundos)
+        {
+            lastTime2 = Time.realtimeSinceStartup;
+            cuentoSegundos = false;
+        }
+        else
+        {
+            seconds = (int)(Time.realtimeSinceStartup - lastTime2);
+        }
+
+        return seconds;
+    }
+
+    //comprueba si estamos en la nube
+    private bool estoyCirculo()
+    {
+        GameObject nube = GameObject.FindGameObjectWithTag("circle");
+
+        return DamageCircle.IsOutsideCircle_Static(this.BodyParts[0].position);
+    }
+
 
     //Lleva el control de los collider, activando y desactivando para que únicamente esté activa la última vida.
     public void updateCollider()

@@ -16,6 +16,7 @@ public class SnakeMovementIA : MonoBehaviour
     private int tduracion;
     private bool poderActivo = false;
     private bool enRecarga = false;
+    private bool cuentoSegundos = true;
 
     public bool repelente = false;
     public bool invisible = false;
@@ -25,6 +26,7 @@ public class SnakeMovementIA : MonoBehaviour
     private bool dcontraria = false;
 
     private double lastTime;
+    private double lastTime2;
 
     public static int contador;
     public int ID;
@@ -46,6 +48,7 @@ public class SnakeMovementIA : MonoBehaviour
     private GameObject god;
 
     private Color originalColor;
+    private int danio = 150;
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +64,10 @@ public class SnakeMovementIA : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         updateCollider();
+
+        updateNube();
 
         updatePoder();
 
@@ -73,6 +79,47 @@ public class SnakeMovementIA : MonoBehaviour
 
         Move(god);
 
+    }
+
+    //comprueba si estamos en la nube
+    private void updateNube()
+    {
+        if (estoyCirculo())
+        {
+            int seconds = cuantosSegundos();
+
+            if (seconds > 1)
+            {
+                this.restarVida((int)(this.danio / (Game.getTimer_Static() / 60f)));
+                cuentoSegundos = true;
+            }
+        }
+        else cuentoSegundos = true;
+    }
+
+    private int cuantosSegundos()
+    {
+
+        int seconds = 0;
+        if (cuentoSegundos)
+        {
+            lastTime2 = Time.realtimeSinceStartup;
+            cuentoSegundos = false;
+        }
+        else
+        {
+            seconds = (int)(Time.realtimeSinceStartup - lastTime2);
+        }
+
+        return seconds;
+    }
+
+    //comprueba si estamos en la nube
+    private bool estoyCirculo()
+    {
+        GameObject nube = GameObject.FindGameObjectWithTag("circle");
+
+        return DamageCircle.IsOutsideCircle_Static(this.BodyParts[0].position);
     }
 
     //Comprueba si la cabeza del emigo esta cerca de tu propia cola
@@ -425,32 +472,84 @@ public class SnakeMovementIA : MonoBehaviour
         GameObject res = null;
         bool player = false;
         int tam = 0;
+        int tam_enemy = 0;
+        bool hayBolas;
 
         //Dependiendo del estado calculado en la funcion anterior, haremos un acción determinada.
         switch (estado)
         {
             case 0: //Búsqueda
                 objs = GameObject.FindGameObjectsWithTag("balls");
+                hayBolas = false;
 
                 //Buscamos las bolas en el mapa y vamos a por la más cercana
                 for (int i = 0; i < objs.Length; i++)
                 {
                     dist = Vector3.Distance(BodyParts[0].position, objs[i].transform.position);
 
-                    if (dist < min)
+                    if (dist < min && !DamageCircle.IsOutsideCircle_Static(objs[i].transform.position))
                     {
+                        hayBolas = true;
                         min = dist;
                         pos = i;
                     }
                 }
 
-                res = objs[pos];
+                if(!hayBolas)
+                {
+                    //Ataque
+                    objs = GameObject.FindGameObjectsWithTag("snakes");
+                    objs2 = GameObject.FindGameObjectWithTag("snakep");
+                    player = false;
+                    tam_enemy = -1;
+
+                    //Buscamos de todas las serpientes, la mas cercana para atacarle.
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        tam_enemy = objs[i].GetComponent<SnakeMovementIA>().BodyParts.Count;
+                        dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[tam_enemy - 1].position);
+
+                        if (dist < min && ID != objs[i].GetComponent<SnakeMovementIA>().ID && !objs[i].gameObject.GetComponent<SnakeMovementIA>().invisible)
+                        {
+                            min = dist;
+                            pos = i;
+                        }
+                    }
+
+                    if (objs2 != null)
+                    {
+                        tam_enemy = objs2.GetComponent<SnakeMovementReal>().BodyParts.Count;
+                        dist = Vector3.Distance(BodyParts[0].position, objs2.GetComponent<SnakeMovementReal>().BodyParts[tam_enemy - 1].position);
+
+                        if (dist < min && !objs2.GetComponent<SnakeMovementReal>().invisible)
+                        {
+                            min = dist;
+                            player = true;
+                        }
+                    }
+
+                    tam = 0;
+                    if (player)
+                    {
+                        tam = objs2.GetComponent<SnakeMovementReal>().BodyParts.Count;
+                        res = objs2.GetComponent<SnakeMovementReal>().BodyParts[tam - 1].gameObject;
+                    }
+                    else
+                    {
+                        tam = objs[pos].GetComponent<SnakeMovementIA>().BodyParts.Count;
+                        res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[tam - 1].gameObject;
+                    }
+                }
+                else
+                {
+                    res = objs[pos];
+                }
                 break;
             case 1: //Ataque
                 objs = GameObject.FindGameObjectsWithTag("snakes");
                 objs2 = GameObject.FindGameObjectWithTag("snakep");
                 player = false;
-                int tam_enemy = -1;
+                tam_enemy = -1;
 
                 //Buscamos de todas las serpientes, la mas cercana para atacarle.
                 for (int i = 0; i < objs.Length; i++)
@@ -576,6 +675,7 @@ public class SnakeMovementIA : MonoBehaviour
                 }
                 break;
             case 3: //Defensa
+                hayBolas = false;
                 objs = GameObject.FindGameObjectsWithTag("balls");
 
                 //Buscamos las bolas y vamos a por la más cercana
@@ -583,14 +683,64 @@ public class SnakeMovementIA : MonoBehaviour
                 {
                     dist = Vector3.Distance(BodyParts[0].position, objs[i].transform.position);
 
-                    if (dist < min)
+                    if (dist < min && !DamageCircle.IsOutsideCircle_Static(objs[i].transform.position))
                     {
+                        hayBolas = true;
                         min = dist;
                         pos = i;
                     }
                 }
 
-                res = objs[pos];
+                if (!hayBolas)
+                {
+                    //Ataque
+                    objs = GameObject.FindGameObjectsWithTag("snakes");
+                    objs2 = GameObject.FindGameObjectWithTag("snakep");
+                    player = false;
+                    tam_enemy = -1;
+                    min = Mathf.Infinity;
+
+                    //Buscamos de todas las serpientes, la mas cercana para atacarle.
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        tam_enemy = objs[i].GetComponent<SnakeMovementIA>().BodyParts.Count;
+                        dist = Vector3.Distance(BodyParts[0].position, objs[i].GetComponent<SnakeMovementIA>().BodyParts[tam_enemy - 1].position);
+
+                        if (dist < min && ID != objs[i].GetComponent<SnakeMovementIA>().ID && !objs[i].gameObject.GetComponent<SnakeMovementIA>().invisible)
+                        {
+                            min = dist;
+                            pos = i;
+                        }
+                    }
+
+                    if (objs2 != null)
+                    {
+                        tam_enemy = objs2.GetComponent<SnakeMovementReal>().BodyParts.Count;
+                        dist = Vector3.Distance(BodyParts[0].position, objs2.GetComponent<SnakeMovementReal>().BodyParts[tam_enemy - 1].position);
+
+                        if (dist < min && !objs2.GetComponent<SnakeMovementReal>().invisible)
+                        {
+                            min = dist;
+                            player = true;
+                        }
+                    }
+
+                    tam = 0;
+                    if (player)
+                    {
+                        tam = objs2.GetComponent<SnakeMovementReal>().BodyParts.Count;
+                        res = objs2.GetComponent<SnakeMovementReal>().BodyParts[tam - 1].gameObject;
+                    }
+                    else
+                    {
+                        tam = objs[pos].GetComponent<SnakeMovementIA>().BodyParts.Count;
+                        res = objs[pos].GetComponent<SnakeMovementIA>().BodyParts[tam - 1].gameObject;
+                    }
+                }
+                else
+                {
+                    res = objs[pos];
+                }
                 break;
         }
 

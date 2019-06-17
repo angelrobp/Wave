@@ -9,6 +9,7 @@ public class Game : MonoBehaviour
     private GameObject objectEstadoJuego, texto, personaje;
     private EstadoJuego estadoJuego;
     private DamageCircle damageCircle;
+    private static Game instance;
 
     [SerializeField]
     private GameObject Up = null;
@@ -39,10 +40,9 @@ public class Game : MonoBehaviour
 
     //Tamaño y Reducción del area
     [SerializeField]
-    private float diametroArea;
+    private float diametroArea = 14000;
     private float decreaseArea;
     private float lastTimeDecrease;
-        
 
     private int SnakeNumber;
 
@@ -55,6 +55,7 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         endGame = false;
         winGame = false;
 
@@ -62,7 +63,6 @@ public class Game : MonoBehaviour
         mainTimer = 15f*60f;
 
         //Inicializo diametro del area
-        diametroArea = 14000;
         damageCircle = GameObject.Find("DamageCircle").GetComponent<DamageCircle>();
         damageCircle.SetCircleSize(new Vector3(0, 0), new Vector3(diametroArea, diametroArea));
         
@@ -119,6 +119,26 @@ public class Game : MonoBehaviour
         pausaActiva = false;
         pausa.SetActive(pausaActiva);
 
+    }
+
+    public float getDiametroArea()
+    {
+        return diametroArea;
+    }
+
+    public static float getDiametroArea_Static()
+    {
+        return instance.getDiametroArea();
+    }
+
+    public float getTimer()
+    {
+        return mainTimer;
+    }
+
+    public static float getTimer_Static()
+    {
+        return instance.getTimer();
     }
 
     public void setActiveMenu ()

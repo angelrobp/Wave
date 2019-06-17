@@ -24,12 +24,28 @@ public class SnakePlayer : MonoBehaviour{
 
             sm.AddBodyPart();
         }
+
+        if (menosVida())
+        {
+            SnakeMovementReal sm = gameObject.GetComponentInParent<SnakeMovementReal>();
+
+            GameObject go = sm.BodyParts[sm.BodyParts.Count - 1].gameObject;
+            sm.RemoveBodyPart();
+            Destroy(go.gameObject);
+        }
+
     }
 
     //Comprueba si tenemos que crecer dependiendo de la vida que tenemos.
     public bool nuevaVida()
     {
         if (Mathf.Floor(GetComponentInParent<SnakeMovementReal>().vida / 100) >= gameObject.GetComponentInParent<SnakeMovementReal>().BodyParts.Count) return true;
+        return false;
+    }
+
+    public bool menosVida()
+    {
+        if (Mathf.Floor(GetComponentInParent<SnakeMovementReal>().vida / 100) < gameObject.GetComponentInParent<SnakeMovementReal>().BodyParts.Count-1) return true;
         return false;
     }
 

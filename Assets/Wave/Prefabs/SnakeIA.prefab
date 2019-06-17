@@ -52,8 +52,8 @@ MonoBehaviour:
   invisible: 0
   ID: 0
   beginsize: 1
-  speed: 350
-  angle_increment: 0.03
+  speed: 450
+  angle_increment: 0.045
   dir_angle: 0
   bodyprefab: {fileID: 791376109863269236, guid: 3f8eae7f2db4da14f90b6e1d0edde1ae,
     type: 3}
