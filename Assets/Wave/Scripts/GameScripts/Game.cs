@@ -83,7 +83,7 @@ public class Game : MonoBehaviour
         for(int i=0; i<UpsNumber; i++)
         {
             g = Instantiate(Up);
-            g.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
+            g.transform.position = new Vector3(Random.Range(-15000, 15000), Random.Range(-15000, 15000), 0);
         }
 
         //Se inicializan las serpientes controladas por la IA
@@ -91,7 +91,7 @@ public class Game : MonoBehaviour
         for (int i = 0; i < SnakeNumber; i++)
         {
             s = Instantiate(snake);
-            s.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
+            s.transform.position = new Vector3(Random.Range(-15000, 15000), Random.Range(-15000, 15000), 0);
 
             if (i < velocidad) s.GetComponent<SnakeMovementIA>().setPoder(0);
             else if(i < liminv) s.GetComponent<SnakeMovementIA>().setPoder(1);
@@ -100,7 +100,7 @@ public class Game : MonoBehaviour
         
 
         
-        personaje.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
+        personaje.transform.position = new Vector3(Random.Range(-15000, 15000), Random.Range(-15000, 15000), 0);
 
         //UNICAMENTE MODIFICAR ESTA VARIABLE PARA INDICAR EL PODER DEL JUGADOR (TIPO)
         objectEstadoJuego = GameObject.FindGameObjectWithTag("EstadoJuego");
@@ -260,7 +260,7 @@ public class Game : MonoBehaviour
     public static void GenerateUp()
     {
         GameObject g = Instantiate(staticUp);
-        g.transform.position = new Vector3(Random.Range(-7000, 7000), Random.Range(-7000, 7000), 0);
+        g.transform.position = new Vector3(Random.Range(-15000, 15000), Random.Range(-15000, 15000), 0);
     }
 
 
